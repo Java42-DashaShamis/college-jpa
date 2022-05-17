@@ -4,9 +4,9 @@ import javax.persistence.*;
 
 @Entity
 @Table(name = "mark")
-@NamedQuery(name = "MarkEntity.findByStIDandSbID",
-	query = "select m from MarkEntity m where m.student = ?1 and m.subject = ?2")
 public class MarkEntity {
+	
+	@Id
 	@GeneratedValue(strategy = GenerationType.IDENTITY)
 	long id;
 	int mark;

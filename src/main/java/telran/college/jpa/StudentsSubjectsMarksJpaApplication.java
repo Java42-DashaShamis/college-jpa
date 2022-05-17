@@ -53,7 +53,7 @@ public class StudentsSubjectsMarksJpaApplication {
 		for(int i = 1; i<=nSubjects; i++) {
 			Subject subject = new Subject(getId(false),"subject"+i);
 			service.addSubject(subject);
-			listOfStIDs.add(subject.id);
+			listOfSbIDs.add(subject.id);
 		}
 	}
 	void createMarks() {
@@ -85,7 +85,10 @@ public class StudentsSubjectsMarksJpaApplication {
 		long id = 0;
 		var threadLocal = ThreadLocalRandom.current();
 		do {
-			id = choiceOfRepo ? listOfStIDs.get(threadLocal.nextInt(listOfStIDs.size())) : listOfSbIDs.get(threadLocal.nextInt(listOfSbIDs.size()));
+			if(choiceOfRepo ? !listOfStIDs.isEmpty() : !listOfSbIDs.isEmpty()) {
+				id = choiceOfRepo ? listOfStIDs.get(threadLocal.nextInt(listOfStIDs.size())) : listOfSbIDs.get(threadLocal.nextInt(listOfSbIDs.size()));
+			}
+			
 		}while(service.exists(id, choiceOfRepo));
 		
 		return id;

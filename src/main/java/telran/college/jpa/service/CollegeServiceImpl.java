@@ -28,7 +28,7 @@ public class CollegeServiceImpl implements CollegeService {
 	@Override
 	public void addStudent(Student student) {
 		if(studentRepository.existsById(student.id)) {
-			throw new RuntimeException(String.format("Student with id %d is already exists", student.id));
+			throw new RuntimeException(String.format("Student with id %d is already exist", student.id));
 		}
 		StudentEntity studentEntity = new StudentEntity(student.id, student.name);
 		studentRepository.save(studentEntity);
@@ -38,7 +38,7 @@ public class CollegeServiceImpl implements CollegeService {
 	public void addSubject(Subject sbj) {
 		
 		if(studentRepository.existsById(sbj.id)) {
-			throw new RuntimeException(String.format("Student with id %d is already exists", sbj.id));
+			throw new RuntimeException(String.format("Student with id %d is already exist", sbj.id));
 		}
 		SubjectEntity subjectEntity = new SubjectEntity(sbj.id, sbj.sbjName);
 		subjectRepository.save(subjectEntity);
@@ -48,11 +48,11 @@ public class CollegeServiceImpl implements CollegeService {
 	public void addMark(Mark mark) {
 		StudentEntity studentEntity = studentRepository.findById(mark.stid).orElse(null);
 		if(studentEntity == null) {
-			throw new RuntimeException(String.format("Student with id %d doesn't exists", mark.stid));
+			throw new RuntimeException(String.format("Student with id %d doesn't exist", mark.stid));
 		}
 		SubjectEntity subjectEntity = subjectRepository.findById(mark.sbid).orElse(null);
 		if(subjectEntity == null) {
-			throw new RuntimeException(String.format("Subject with id %d doesn't exists", mark.stid));
+			throw new RuntimeException(String.format("Subject with id %d doesn't exist", mark.stid));
 		}
 		MarkEntity markEntity = new MarkEntity(mark.mark,studentEntity,subjectEntity);
 		markRepository.save(markEntity);
@@ -101,6 +101,6 @@ public class CollegeServiceImpl implements CollegeService {
 	public boolean existsMarkOfStudentForSubject(long stID, long sbID) {
 		StudentEntity studentEntity = studentRepository.findById(stID).orElse(null);
 		SubjectEntity subjectEntity = subjectRepository.findById(sbID).orElse(null);
-		return markRepository.findByStIDandSbID(studentEntity, subjectEntity)!=null;
+		return markRepository.findByStudentAndSubject(studentEntity, subjectEntity)!=null;
 	}
 }

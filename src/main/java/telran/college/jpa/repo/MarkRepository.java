@@ -7,5 +7,5 @@ import telran.college.jpa.entities.StudentEntity;
 import telran.college.jpa.entities.SubjectEntity;
 
 public interface MarkRepository extends JpaRepository<MarkEntity, Long> {
-	MarkEntity findByStIDandSbID(StudentEntity studentEntity, SubjectEntity subjectEntity);
+	MarkEntity findByStudentAndSubject(StudentEntity student, SubjectEntity subject);
 }
