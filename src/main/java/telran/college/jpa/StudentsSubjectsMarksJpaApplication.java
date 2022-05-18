@@ -25,6 +25,7 @@ public class StudentsSubjectsMarksJpaApplication {
 	
 	Logger LOG = LoggerFactory.getLogger(StudentsSubjectsMarksJpaApplication.class);
 	
+	// V.R. The 0 as defaul value isn't the best solution
 	@Value("${app.students.num: 0}")
 	int nStudents;
 	@Value("${app.subjects.num: 0}")
@@ -34,6 +35,7 @@ public class StudentsSubjectsMarksJpaApplication {
 	@Autowired
 	CollegeService service;
 	
+	// V.R. Why LinkedList is declared? Why not List?
 	LinkedList<Long> listOfStIDs = new LinkedList<Long>();
 	LinkedList<Long> listOfSbIDs = new LinkedList<Long>();
 	
@@ -80,6 +82,8 @@ public class StudentsSubjectsMarksJpaApplication {
 		}
 	}
 	
+	// V,R. Why following methods are protected? Why it is better
+	// than public or private?
 	protected long getId(boolean choiceOfRepo) {
 		long id = 0;
 		var threadLocal = ThreadLocalRandom.current();
@@ -95,11 +99,16 @@ public class StudentsSubjectsMarksJpaApplication {
 	protected long getStOrSbID(boolean choiceOfRepo) {
 		long id = 0;
 		var threadLocal = ThreadLocalRandom.current();
-		
+		/* V.R.
+		 *  Both of lists cannot be empty here. That is why 'if' looks redundant
+		 */
 		if(choiceOfRepo ? !listOfStIDs.isEmpty() : !listOfSbIDs.isEmpty()) {
 			id = choiceOfRepo ? listOfStIDs.get(threadLocal.nextInt(listOfStIDs.size())) : listOfSbIDs.get(threadLocal.nextInt(listOfSbIDs.size()));
 		}
-		
+		/* V.R.
+		 * The generation of random index can be organised as separated method.
+		 * And getId() will be more simple in this case.
+		 */
 		return id;
 	}
 }
