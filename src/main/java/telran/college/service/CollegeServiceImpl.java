@@ -106,6 +106,14 @@ public class CollegeServiceImpl implements CollegeService {
 		List<StudentEntity> studentEntities = markEntities.stream().map(MarkEntity::getStudent).distinct().toList();
 		List<String> studentsNames = studentEntities.stream().map(StudentEntity::getName).toList();
 		return studentsNames;
+		/* V.R. It can be done a little bit shorter
+		 return marksRepository
+				.findBySubjectSubjectNameAndMarkGreaterThanEqual(subjectName, mark)
+				.stream().map(MarkEntity::getStudent)
+    			.map(StudentEntity::getName).distinct()
+    			.toList();
+		 */
+		
 	}
 
 }
