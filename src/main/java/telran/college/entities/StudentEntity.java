@@ -1,10 +1,13 @@
 package telran.college.entities;
 
+import java.util.List;
+
 import javax.persistence.*;
 
 @Entity
 @Table(name = "students")
 public class StudentEntity {
+	
 	@Id
 	long id;
 	@Column(unique = true)
@@ -21,4 +24,6 @@ public class StudentEntity {
 	}
 	public StudentEntity() {
 	}
+	@OneToMany(mappedBy = "student", cascade = CascadeType.REMOVE)
+	List<MarkEntity> marks;
 }

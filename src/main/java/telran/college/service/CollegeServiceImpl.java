@@ -2,13 +2,13 @@ package telran.college.service;
 
 import java.util.List;
 
+
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
 import telran.college.dto.*;
-import telran.college.entities.MarkEntity;
-import telran.college.entities.StudentEntity;
-import telran.college.entities.SubjectEntity;
+import telran.college.entities.*;
+import telran.college.entities.projection.*;
 import telran.college.repo.*;
 @Service
 public class CollegeServiceImpl implements CollegeService {
@@ -65,15 +65,12 @@ public class CollegeServiceImpl implements CollegeService {
 
 	@Override
 	public List<Integer> getStudentMarksSubject(String name, String subjectName) {
-		List<MarkEntity> markEntities =
-				marksRepository.findByStudentNameAndSubjectSubjectName(name, subjectName);
-		return markEntities.stream().map(MarkEntity::getMark).toList();
+		return marksRepository.findByStudentNameAndSubjectSubjectName(name, subjectName).stream().map(MarkProjection::getMark).toList();
 	}
 
 	@Override
 	public List<Student> goodCollegeStudents() {
-		// TODO Auto-generated method stub not now
-		return null;
+		return marksRepository.findGoodStudents().stream().map(sp -> new Student(sp.getId(),sp.getName())).toList();
 	}
 
 	@Override
@@ -95,17 +92,28 @@ public class CollegeServiceImpl implements CollegeService {
 	}
 
 	@Override
+	@Transactional
 	public void deleteStudentsAvgMarkLess(int avgMark) {
-		// TODO Auto-generated method stub not now
+		List<StudentEntity> studentsForDelete = studentsRepository.getStudentsAvgMarkLess(avgMark);
+		studentsForDelete.forEach(studentsRepository::delete);
 
 	}
 
 	@Override
 	public List<String> getStudentsSubjectMark(String subjectName, int mark) {
-		List<MarkEntity> markEntities = marksRepository.findBySubjectSubjectNameAndMarkGreaterThan(subjectName,mark);
-		List<StudentEntity> studentEntities = markEntities.stream().map(MarkEntity::getStudent).distinct().toList();
-		List<String> studentsNames = studentEntities.stream().map(StudentEntity::getName).toList();
-		return studentsNames;
+		return marksRepository.findDistinctBySubjectSubjectNameAndMarkGreaterThanEqual(subjectName,mark).stream().map(StudentNameProjection::getStudentName).toList();
+	}
+
+	@Override
+	@Transactional
+	public List<Student> deleteStudentsMarksCountLess(int count) {
+		List<StudentEntity> studentEntitiesForDelete = studentsRepository.getStudentsCountMarkLess(count);
+		studentEntitiesForDelete.forEach(studentsRepository::delete);
+		return studentEntitiesForDelete.stream().map(e -> new Student(e.getId(),e.getName())).toList();
+	}
+	@Override
+	public List<Subject> subjectsAvgMarkGreater(int avgMark) {
+		return marksRepository.findSubjectsAvgMarkGreater(avgMark).stream().map(sbp -> new Subject(sbp.getId(),sbp.getSubjectName())).toList();
 	}
 
 }
