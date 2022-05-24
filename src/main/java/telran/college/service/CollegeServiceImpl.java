@@ -113,6 +113,10 @@ public class CollegeServiceImpl implements CollegeService {
 	}
 	@Override
 	public List<Subject> subjectsAvgMarkGreater(int avgMark) {
+		/* V.R.
+		 * This functionality may be realized usin subject repository.
+		 * Like getStudentsCountMarkLess
+		 */
 		return marksRepository.findSubjectsAvgMarkGreater(avgMark).stream().map(sbp -> new Subject(sbp.getId(),sbp.getSubjectName())).toList();
 	}
 

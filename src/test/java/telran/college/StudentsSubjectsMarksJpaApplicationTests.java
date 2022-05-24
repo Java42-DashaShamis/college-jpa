@@ -70,6 +70,9 @@ class StudentsSubjectsMarksJpaApplicationTests {
 		List<Student> students = collegeService.deleteStudentsMarksCountLess(5);
 		assertEquals(1,students.size());
 		assertEquals(2,students.get(0).id); 
+		/* V.R.
+		 * Using assertIterableEquals(expected, actual) looks more convincing
+		 */
 	}
 	@Test
 	@Order(6)
@@ -82,5 +85,8 @@ class StudentsSubjectsMarksJpaApplicationTests {
 		List<Subject> actual = collegeService.subjectsAvgMarkGreater(70); //subject1 - 72 subject2 - 68
 		assertEquals(1,actual.size());
 		assertEquals(1,actual.get(0).id);
+		/* V.R.
+		 * Using assertIterableEquals(expected, actual) looks more convincing
+		 */
 	}
 }
