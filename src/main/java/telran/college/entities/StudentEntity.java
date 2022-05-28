@@ -4,6 +4,9 @@ import java.util.List;
 
 import javax.persistence.*;
 
+import org.hibernate.annotations.OnDelete;
+import org.hibernate.annotations.OnDeleteAction;
+
 @Entity
 @Table(name = "students")
 public class StudentEntity {
@@ -25,5 +28,6 @@ public class StudentEntity {
 	public StudentEntity() {
 	}
 	@OneToMany(mappedBy = "student", cascade = CascadeType.REMOVE)
+	@OnDelete(action = OnDeleteAction.CASCADE)
 	List<MarkEntity> marks;
 }

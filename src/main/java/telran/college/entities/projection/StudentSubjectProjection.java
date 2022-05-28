@@ -1,6 +1,6 @@
 package telran.college.entities.projection;
 
-public interface StudentProjection {
+public interface StudentSubjectProjection {
 	Long getId();
 	String getName();
 }

@@ -74,29 +74,26 @@ public class CollegeServiceImpl implements CollegeService {
 	}
 
 	@Override
-	public List<Student> bestStudents(int nStudents) {
-		// TODO Auto-generated method stub not now
-		return null;
+	public List<Student> bestStudents(int nStudents) { //NativeSQL
+		return marksRepository.findBestStudents(nStudents).stream().map(sp -> new Student(sp.getId(),sp.getName())).toList();
 	}
 
 	@Override
 	public List<Student> bestStudentsSubject(int nStudents, String subjectName) {
-		// TODO Auto-generated method stub not now
-		return null;
+		return toStudentFromProjList(marksRepository.findBestStudentsSubject(nStudents, subjectName));
 	}
 
 	@Override
 	public Subject subjectGreatestAvgMark() {
-		// TODO Auto-generated method stub not now
-		return null;
+		return toSubjectFromProj(marksRepository.findSubjectGreatestAvgMark());
 	}
 
 	@Override
 	@Transactional
 	public void deleteStudentsAvgMarkLess(int avgMark) {
-		List<StudentEntity> studentsForDelete = studentsRepository.getStudentsAvgMarkLess(avgMark);
-		studentsForDelete.forEach(studentsRepository::delete);
-
+		//List<StudentEntity> studentsForDelete = studentsRepository.getStudentsAvgMarkLess(avgMark);
+		//studentsForDelete.forEach(studentsRepository::delete);
+		studentsRepository.deleteStudentsAvgMarkLess((double)avgMark);
 	}
 
 	@Override
@@ -113,7 +110,31 @@ public class CollegeServiceImpl implements CollegeService {
 	}
 	@Override
 	public List<Subject> subjectsAvgMarkGreater(int avgMark) {
-		return marksRepository.findSubjectsAvgMarkGreater(avgMark).stream().map(sbp -> new Subject(sbp.getId(),sbp.getSubjectName())).toList();
+		return marksRepository.findSubjectsAvgMarkGreater((double)avgMark).stream().map(sbp -> new Subject(sbp.getId(),sbp.getName())).toList();
 	}
 
+	@Override
+	public List<Student> getStudentsAllMarksSubject(int mark, String subject) {
+		return toStudentFromProjList(marksRepository.findStudentsAllMarksGreaterEqual(mark, subject));
+	}
+	
+	private List<Student> toStudentFromProjList(List<StudentSubjectProjection> listOfProj){
+		return listOfProj.stream().map(sp -> new Student(sp.getId(),sp.getName())).toList();
+	}
+	private List<Subject> toSubjectFromProjList(List<StudentSubjectProjection> listOfProj){
+		return listOfProj.stream().map(sp -> new Subject(sp.getId(),sp.getName())).toList();
+	}
+	private Subject toSubjectFromProj(StudentSubjectProjection proj){
+		return new Subject(proj.getId(), proj.getName());
+	}
+
+	@Override
+	public List<Student> getStudentsMaxMarksCount() {
+		return toStudentFromProjList(marksRepository.findStudentsMaxMarksCount());
+	}
+
+	@Override
+	public List<Subject> getSubjectsAvgMarkLess(int avgMark) {
+		return toSubjectFromProjList(subjectsRepository.findSubjectsAvgMarkLess(avgMark));
+	}
 }
