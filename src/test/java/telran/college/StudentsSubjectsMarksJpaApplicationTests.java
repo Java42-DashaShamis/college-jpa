@@ -95,32 +95,40 @@ void studentsAllMarksSubjectGreaterEqual () {
 	@Test
 	@Order(8)
 	void bestStudentsSubject() {
+		// V.R. OK
 		List<Student> expected = Arrays.asList(new Student(1, "student1"));
 		List<Student> actual = collegeService.bestStudentsSubject(1, "subject1");
+		System.out.println("1. bestStudentsSubject:  " + actual);
 		assertIterableEquals(expected, actual);
 
 	}
 	@Test
 	@Order(9)
 	void bestSubject() {
+		// V.R. OK
 		Subject expected = new Subject(1, "subject1");
 		Subject actual = collegeService.subjectGreatestAvgMark();
+		System.out.println("2. bestSubject:  " + actual);
 		assertEquals(expected, actual);
 
 	}
 	@Test
 	@Order(11)
 	void studentsMaxMarksCount() {
+		// V.R. OK
 		List<Student> expected = Arrays.asList(new Student(1, "student1"));
 		List<Student> actual = collegeService.getStudentsMaxMarksCount();
+		System.out.println("3. studentsMaxMarksCount:  " + actual);
 		assertIterableEquals(expected, actual);
 
 	}
 	@Test
 	@Order(10)
 	void subjectsAvgMarkLess() {
+		// V.R. OK
 		List<Subject> expected = Arrays.asList(new Subject(2, "subject2"));
 		List<Subject> actual = collegeService.getSubjectsAvgMarkLess(70);
+		System.out.println("4. subjectsAvgMarkLess:  " + actual);
 		assertIterableEquals(expected, actual);
 
 	}

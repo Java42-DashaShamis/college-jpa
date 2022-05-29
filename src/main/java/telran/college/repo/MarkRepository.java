@@ -39,6 +39,7 @@ public interface MarkRepository extends JpaRepository<MarkEntity, Long> {
 			+"group by id, name order by avg(m.mark) desc limit :nStudents", nativeQuery = true)
 	List<StudentSubjectProjection> findBestStudentsSubject(int nStudents, String subjectName);
 	
+	// V.R. It may be simpler
 	@Query(value = "select sb.id as id, sb.subject_name as name from marks m join subjects sb on m.subject_id = sb.id "
 			+"group by id, name having avg(m.mark) = "
 			+"(select max(subjectsavgmark) from (select sb.id as id, avg(m.mark) as subjectsavgmark from marks m join subjects sb on m.subject_id = sb.id group by id ))", nativeQuery = true)//order by avg(m.mark) desc limit 1
